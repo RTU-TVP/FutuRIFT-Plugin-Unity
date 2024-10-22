@@ -18,22 +18,12 @@ namespace Futurift.DataSenders
             ReadBufferSize = 4096,
             WriteBufferSize = 4096,
             ReadTimeout = 500,
-            PortName = $"COM{options.ComPort}",
+            PortName = $"COM{options.comPort}",
         };
 
-        public void SendData(byte[] data)
-        {
-            _port.Write(data, 0, data.Length);
-        }
+        public void SendData(byte[] data) => _port.Write(data, 0, data.Length);
 
-        public void Start()
-        {
-            _port.Open();
-        }
-
-        public void Stop()
-        {
-            _port.Close();
-        }
+        public void Start() => _port.Open();
+        public void Stop() => _port.Close();
     }
 }

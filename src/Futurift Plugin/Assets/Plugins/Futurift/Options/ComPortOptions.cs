@@ -5,7 +5,7 @@ namespace Futurift.Options
     [Serializable]
     public class ComPortOptions
     {
-        public int ComPort;
+        public int comPort;
 
         public ComPortOptions()
         {
@@ -13,7 +13,7 @@ namespace Futurift.Options
 
         public ComPortOptions(int comPort)
         {
-            ComPort = comPort;
+            this.comPort = comPort;
         }
     }
 }
