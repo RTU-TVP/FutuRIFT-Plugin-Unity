@@ -266,12 +266,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51ff4fca020fba942a57fc51e694086d, type: 3}
+  m_Script: {fileID: 11500000, guid: b38e4317c1f3429ba667e0e4e59637f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portNumber: 6
-  pitch: 0
-  roll: 0
+  ipAddress: 192.168.127.1
+  port: 6065
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
