@@ -6,18 +6,21 @@ namespace Futurift.DataSenders
 {
     internal class UdpPortSender : IDataSender
     {
-        private readonly UdpClient udpClient;
-        private readonly IPEndPoint endPoint;
+        public bool IsConnected => true;
+
+        private readonly UdpClient _udpClient;
+        private readonly IPEndPoint _endPoint;
 
         public UdpPortSender(UdpOptions options)
         {
-            udpClient = new UdpClient();
-            endPoint = new IPEndPoint(IPAddress.Parse(options.ip), options.port);
+            _udpClient = new UdpClient();
+            _endPoint = new IPEndPoint(IPAddress.Parse(options.ip), options.port);
         }
+
 
         public void SendData(byte[] data)
         {
-            udpClient.Send(data, data.Length, endPoint);
+            _udpClient.Send(data, data.Length, _endPoint);
         }
 
         public void Start()
