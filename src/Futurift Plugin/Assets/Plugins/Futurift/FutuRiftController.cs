@@ -5,6 +5,9 @@ using System.Timers;
 
 namespace Futurift
 {
+    /// <summary>
+    /// Класс <c>FutuRiftController</c> предназначен для управления устройством FutuRift через отправку UDP-сообщений.
+    /// </summary>
     public class FutuRiftController
     {
         private const byte ESC = 253;
@@ -18,18 +21,33 @@ namespace Futurift
         private float _pitch;
         private float _roll;
 
+        /// <summary>
+        /// Свойство для чтения и записи значения угла тангажа.
+        /// Наклон вперед или назад.
+        /// Значение ограничено в диапазоне от -15 до 21.
+        /// </summary>
         public float Pitch
         {
             get => _pitch;
             set => _pitch = value.Clamp(-15, 21);
         }
 
+        /// <summary>
+        /// Свойство для чтения и записи значения угла крена.
+        /// Наклон влево или вправо.
+        /// Значение ограничено в диапазоне от -18 до 18.
+        /// </summary>
         public float Roll
         {
             get => _roll;
             set => _roll = value.Clamp(-18, 18);
         }
 
+        /// <summary>
+        /// Конструктор класса <c>FutuRiftController</c>.
+        /// </summary>
+        /// <param name="ip">IP-адрес по которому будет отправляться UDP-сообщение.</param>
+        /// <param name="port">Порт по которому будет отправляться UDP-сообщение.</param>
         public FutuRiftController(string ip = "127.0.0.1", int port = 6065)
         {
             _udpClient = new UdpClient();
@@ -43,11 +61,17 @@ namespace Futurift
             _timer.Elapsed += Timer_Elapsed;
         }
 
+        /// <summary>
+        /// Метод для запуска отправки UDP-сообщений.
+        /// </summary>
         public void Start()
         {
             _timer.Start();
         }
 
+        /// <summary>
+        /// Метод для остановки отправки UDP-сообщений.
+        /// </summary>
         public void Stop()
         {
             _timer.Stop();
