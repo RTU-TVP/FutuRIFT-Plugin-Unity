@@ -1,6 +1,4 @@
-﻿using Futurift.DataSenders;
-using Futurift.Options;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Futurift
 {
@@ -13,20 +11,14 @@ namespace Futurift
 
         private void Awake()
         {
-            var udpOptions = new UdpOptions
-            {
-                ip = ipAddress,
-                port = port
-            };
-
-            _controller = new FutuRiftController(new UdpPortSender(udpOptions));
+            _controller = new FutuRiftController(ipAddress, port);
         }
-        
+
         private void Update()
         {
             var euler = transform.eulerAngles;
-            _controller.Pitch = (euler.x > 180 ? euler.x - 360 : euler.x);
-            _controller.Roll = (euler.z > 180 ? euler.z - 360 : euler.z);
+            _controller.Pitch = euler.x > 180 ? euler.x - 360 : euler.x;
+            _controller.Roll = euler.z > 180 ? euler.z - 360 : euler.z;
         }
 
         private void OnEnable()
