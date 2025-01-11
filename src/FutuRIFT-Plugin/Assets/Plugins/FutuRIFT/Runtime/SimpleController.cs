@@ -11,7 +11,8 @@ namespace FutuRIFT
 
         private void Awake()
         {
-            _controller = new FutuRIFTController(ipAddress, port);
+            var sender = new UdpSender(ipAddress, port);
+            _controller = new FutuRIFTController(sender);
         }
 
         private void Update()

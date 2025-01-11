@@ -42,9 +42,8 @@ class FutuRIFTController
     float Roll { get; set; }
 
     // Constructor of the <c>FutuRIFTController</c> class.
-    // "ip" - The IP address to which the UDP message will be sent.
-    // "port" - The port through which the UDP message will be sent.
-    public FutuRIFTController(string ip = "127.0.0.1", int port = 6065)
+    // "sender" is an object that implements the ISender interface for sending data.
+    public FutuRIFTController(ISender sender)
 
     // Method to start sending UDP messages.
     void Start();
@@ -66,7 +65,8 @@ private FutuRIFTController controller;
 
 void OnEnable()
 {
-    controller = new FutuRIFTController("127.0.0.1", 6065);
+    var sender = new UdpSender("127.0.0.1", 6065);
+    controller = new FutuRIFTController(sender);
     controller.Start();
 }
 // ...
