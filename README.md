@@ -1,24 +1,35 @@
-# Futurift plugin Unity
+# FutuRIFT plugin Unity
 
 [Rus](README.md) | [Eng](README.en.md)
 
-Данный плагин позволяет управлять креслом FutuRift из приложений, написанных на Unity.
+Плагин позволяет взаимодействовать с программой управляющей креслом FutuRIFT в Unity.
 
 ## Добавление плагина в проект
 
-* Необходимо скачать одну из публичных версий плагина, которые можно найти [**тут**](https://github.com/RTU-TVP/Futurift-Plugin-Unity/releases)
+Вы можете установить плагин любым из следующих способов
 
-* Скачанный *unitypackage* необходимо импортировать в ваш Unity проект
+* Скачать unitypackage:
+  * Скачать одну из публичных версий плагина, которые можно найти [**здесь**](https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity/releases).
+  * Импортировать скачанный *unitypackage* в ваш проект Unity.
+  * После добавления Unity автоматически подтянет плагин, позволяя вам его использовать.
 
-* После добавления Unity сама подтянет данный плагин, и позволит вам его использовать
+* С помощью Package Manager (для Unity 2019.3 и выше):
+  * Открыть Package Manager в Unity.
+  * Нажать на кнопку **+** в верхнем левом углу окна Package Manager.
+  * Выбрать **Add package from git URL**.
+  * Ввести ссылку на репозиторий плагина: `https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity.git?path=src/FutuRIFT%20Plugin/Assets/Plugins/FutuRIFT`
+
+* Скачать исходный код:
+  * Склонировать репозиторий плагина.
+  * Скопировать папку **Plugins/FutuRIFT** в папку **Assets** вашего проекта.
 
 ## Использование плагина
 
-Базовый элемент управления креслом - класс **FutuRiftController**
+Базовый элемент управления креслом - класс **FutuRIFTController**
 
 ```cs
-// Класс <c>FutuRiftController</c> предназначен для управления устройством FutuRift через отправку UDP-сообщений.
-class FutuRiftController
+// Класс <c>FutuRIFTController</c> предназначен для управления устройством FutuRIFT через отправку UDP-сообщений.
+class FutuRIFTController
 {
     // Свойство для чтения и записи значения угла тангажа.
     // Наклон вперед или назад.
@@ -30,10 +41,10 @@ class FutuRiftController
     // Значение ограничено в диапазоне от -18 до 18.
     float Roll { get; set; }
 
-    // Конструктор класса <c>FutuRiftController</c>.
+    // Конструктор класса <c>FutuRIFTController</c>.
     // "ip">IP-адрес по которому будет отправляться UDP-сообщение.
     // "port">Порт по которому будет отправляться UDP-сообщение.
-    public FutuRiftController(string ip = "127.0.0.1", int port = 6065)
+    public FutuRIFTController(string ip = "127.0.0.1", int port = 6065)
 
     // Метод для запуска отправки UDP-сообщений.
     void Start();
@@ -43,19 +54,19 @@ class FutuRiftController
 }
 ```
 
-### Управление по сети через Futurift Controller
+### Управление по сети через FutuRIFT Controller
 
-Для удобного использования и тестирования можно использовать [специальное ПО](https://github.com/RTU-TVP/Futurift-Controller-Emulator), выполняющее роль эмулятора кресла и контроллера.
+Для удобного использования и тестирования можно использовать [специальное ПО](https://github.com/RTU-TVP/FutuRIFT-Controller-Emulator), выполняющее роль эмулятора кресла и контроллера.
 
 Данный контроллер принимает команды по UDP, для его использования необходимо использовать конструктор, принимающий ip адрес и порт.
 
 ```cs
 // ...
-private FutuRiftController controller;
+private FutuRIFTController controller;
 
 void OnEnable()
 {
-    controller = new FutuRiftController("127.0.0.1", 6065);
+    controller = new FutuRIFTController("127.0.0.1", 6065);
     controller.Start();
 }
 // ...
@@ -92,4 +103,4 @@ sample.Pitch = -16f
 
 ## Контакты
 
-Futurift Plugin Unity - это проект отдела RTU IT LAB и доработанной студентом RTU TVP Шутовым Кириллом. Если у вас есть вопросы, пожалуйста, свяжитесь со мной по электронной почте: <i@shutovks.ru>.
+FutuRIFT Plugin Unity - это проект отдела RTU IT LAB и доработанной студентом RTU TVP Шутовым Кириллом. Если у вас есть вопросы, пожалуйста, свяжитесь со мной по электронной почте: <i@shutovks.ru>.

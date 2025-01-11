@@ -1,24 +1,35 @@
-# Futurift Plugin for Unity
+# FutuRIFT Plugin for Unity
 
 [Рус](README.md) | [Eng](README.en.md)
 
-This plugin allows you to control the FutuRift chair from applications written in Unity.
+The plugin allows you to interact with the program that controls the FutuRIFT chair in Unity.
 
-## Adding the Plugin to Your Project
+## Adding a plugin to a project
 
-* Download one of the public versions of the plugin, which can be found [**here**](https://github.com/RTU-TVP/Futurift-Plugin-Unity/releases).
+You can install the plugin in any of the following ways
 
-* Import the downloaded *unitypackage* into your Unity project.
+* Download unitypackage:
+* Download one of the public versions of the plugin, which can be found [**here**](https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity/releases ).
+  * Import the downloaded *unitypackage* into your Unity project.
+  * Once added, Unity will automatically pull up the plugin, allowing you to use it.
 
-* After adding it, Unity will automatically pull in the plugin, allowing you to use it.
+* Using Package Manager (for Unity 2019.3 and higher):
+* Open Package Manager in Unity.
+  * Click on the **+** button in the upper-left corner of the Package Manager window.
+  * Select **Add package from git URL**.
+  * Enter a link to the plugin repository: `https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity .git?path=src/FutuRIFT%20Plugin/Assets/Plugins/FutuRIFT`
+
+* Download the source code:
+* Clone the plugin repository.
+  * Copy the **Plugins/FutuRIFT** folder to the **Assets** folder of your project.
 
 ## Using the Plugin
 
-The basic element for controlling the chair is the **FutuRiftController** class.
+The basic element for controlling the chair is the **FutuRIFTController** class.
 
 ```cs
-// The <c>FutuRiftController</c> class is designed to control the FutuRift device by sending UDP messages.
-class FutuRiftController
+// The <c>FutuRIFTController</c> class is designed to control the FutuRIFT device by sending UDP messages.
+class FutuRIFTController
 {
     // A property for getting and setting the pitch angle.
     // Tilt forward or backward.
@@ -30,10 +41,10 @@ class FutuRiftController
     // The value is limited to the range from -18 to 18.
     float Roll { get; set; }
 
-    // Constructor of the <c>FutuRiftController</c> class.
+    // Constructor of the <c>FutuRIFTController</c> class.
     // "ip" - The IP address to which the UDP message will be sent.
     // "port" - The port through which the UDP message will be sent.
-    public FutuRiftController(string ip = "127.0.0.1", int port = 6065)
+    public FutuRIFTController(string ip = "127.0.0.1", int port = 6065)
 
     // Method to start sending UDP messages.
     void Start();
@@ -43,19 +54,19 @@ class FutuRiftController
 }
 ```
 
-### Network Control via the Futurift Controller
+### Network Control via the FutuRIFT Controller
 
-For convenient usage and testing, you can use [special software](https://github.com/RTU-TVP/Futurift-Controller-Emulator) that acts as both a chair emulator and a controller.
+For convenient usage and testing, you can use [special software](https://github.com/RTU-TVP/FutuRIFT-Controller-Emulator) that acts as both a chair emulator and a controller.
 
 This controller receives commands via UDP. To use it, you should provide the IP address and port in the constructor.
 
 ```cs
 // ...
-private FutuRiftController controller;
+private FutuRIFTController controller;
 
 void OnEnable()
 {
-    controller = new FutuRiftController("127.0.0.1", 6065);
+    controller = new FutuRIFTController("127.0.0.1", 6065);
     controller.Start();
 }
 // ...
@@ -92,4 +103,4 @@ This project is licensed under the MIT license – see the LICENSE file for deta
 
 ## Contact
 
-Futurift Plugin Unity is a project by the RTU IT LAB department and was improved by RTU TVP student Kirill Shutov. If you have any questions, please contact me by email: <i@shutovks.ru>.
+FutuRIFT Plugin Unity is a project by the RTU IT LAB department and was improved by RTU TVP student Kirill Shutov. If you have any questions, please contact me by email: <i@shutovks.ru>.
