@@ -1,22 +1,22 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Timers;
-using Futurift.Data;
-using Futurift.DataSenders;
-using Futurift.Extensions;
-using Futurift.Options;
 
 namespace Futurift
 {
     public class FutuRiftController
     {
-        private readonly IDataSender _dataSender;
+        private const byte ESC = 253;
+
         private readonly byte[] _buffer = new byte[33];
-        private readonly Timer _timer;
+        private readonly Timer _timer = new(100);
+
+        private readonly UdpClient _udpClient;
+        private readonly IPEndPoint _endPoint;
 
         private float _pitch;
         private float _roll;
-
-        public bool IsConnected => _dataSender.IsConnected;
 
         public float Pitch
         {
@@ -30,29 +30,26 @@ namespace Futurift
             set => _roll = value.Clamp(-18, 18);
         }
 
-        public FutuRiftController(IDataSender dataSender, FutuRiftOptions futuRiftOptions = null)
+        public FutuRiftController(string ip = "127.0.0.1", int port = 6065)
         {
-            _dataSender = dataSender;
+            _udpClient = new UdpClient();
+            _endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
 
-            _buffer[0] = MSG.SOM;
+            _buffer[0] = byte.MaxValue;
             _buffer[1] = 33;
             _buffer[2] = 12;
-            _buffer[3] = (byte)Flag.OneBlock;
+            _buffer[3] = 3;
 
-            futuRiftOptions ??= new FutuRiftOptions();
-            _timer = new Timer(futuRiftOptions.interval);
             _timer.Elapsed += Timer_Elapsed;
         }
 
         public void Start()
         {
-            _dataSender.Start();
             _timer.Start();
         }
 
         public void Stop()
         {
-            _dataSender.Stop();
             _timer.Stop();
         }
 
@@ -70,9 +67,9 @@ namespace Futurift
 
             Fill(ref index, FullCRC(_buffer, 1, index));
 
-            _buffer[index++] = MSG.EOM;
+            _buffer[index++] = 254;
 
-            _dataSender.SendData(_buffer);
+            _udpClient.Send(_buffer, _buffer.Length, _endPoint);
         }
 
         private void Fill(ref byte index, float value)
@@ -95,10 +92,10 @@ namespace Futurift
 
         private void AddByte(ref byte index, byte value)
         {
-            if (value >= MSG.ESC)
+            if (value >= ESC)
             {
-                _buffer[index++] = MSG.ESC;
-                _buffer[index++] = (byte)(value - MSG.ESC);
+                _buffer[index++] = ESC;
+                _buffer[index++] = (byte)(value - ESC);
             }
             else
             {
@@ -111,10 +108,10 @@ namespace Futurift
             ushort crc = 58005;
             for (var i = start; i < end; i++)
             {
-                if (p[i] == MSG.ESC)
+                if (p[i] == ESC)
                 {
                     i++;
-                    crc = CRC16(crc, (byte)(p[i] + MSG.ESC));
+                    crc = CRC16(crc, (byte)(p[i] + ESC));
                 }
                 else
                 {
@@ -130,6 +127,14 @@ namespace Futurift
             var num1 = (ushort)(byte.MaxValue & (crc >> 8 ^ b));
             var num2 = (ushort)(num1 ^ (uint)num1 >> 4);
             return (ushort)((crc ^ num2 << 4 ^ num2 >> 3) << 8 ^ (num2 ^ num2 << 5) & byte.MaxValue);
+        }
+    }
+
+    internal static class ComparableExtensions
+    {
+        public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+        {
+            return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
         }
     }
 }
