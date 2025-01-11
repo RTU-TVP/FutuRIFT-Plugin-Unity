@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
-namespace Futurift
+namespace FutuRIFT
 {
     public class SimpleController : MonoBehaviour
     {
         [SerializeField] private string ipAddress = "127.0.0.1";
         [SerializeField] private int port = 6065;
 
-        private FutuRiftController _controller;
+        private FutuRIFTController _controller;
 
         private void Awake()
         {
-            _controller = new FutuRiftController(ipAddress, port);
+            _controller = new FutuRIFTController(ipAddress, port);
         }
 
         private void Update()

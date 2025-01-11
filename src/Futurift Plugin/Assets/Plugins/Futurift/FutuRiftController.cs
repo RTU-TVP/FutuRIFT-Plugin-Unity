@@ -3,12 +3,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Timers;
 
-namespace Futurift
+namespace FutuRIFT
 {
     /// <summary>
     /// Класс <c>FutuRiftController</c> предназначен для управления устройством FutuRift через отправку UDP-сообщений.
     /// </summary>
-    public class FutuRiftController
+    public class FutuRIFTController
     {
         private const byte ESC = 253;
 
@@ -48,7 +48,7 @@ namespace Futurift
         /// </summary>
         /// <param name="ip">IP-адрес по которому будет отправляться UDP-сообщение.</param>
         /// <param name="port">Порт по которому будет отправляться UDP-сообщение.</param>
-        public FutuRiftController(string ip = "127.0.0.1", int port = 6065)
+        public FutuRIFTController(string ip = "127.0.0.1", int port = 6065)
         {
             _udpClient = new UdpClient();
             _endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
