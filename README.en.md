@@ -17,7 +17,7 @@ You can install the plugin in any of the following ways
 * Open Package Manager in Unity.
   * Click on the **+** button in the upper-left corner of the Package Manager window.
   * Select **Add package from git URL**.
-  * Enter a link to the plugin repository: `https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity .git?path=src/FutuRIFT%20Plugin/Assets/Plugins/FutuRIFT`
+  * Enter a link to the plugin repository: `https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity .git?path=src/FutuRIFT-Plugin/Assets/Plugins/FutuRIFT`
 
 * Download the source code:
 * Clone the plugin repository.

@@ -17,7 +17,7 @@
   * Открыть Package Manager в Unity.
   * Нажать на кнопку **+** в верхнем левом углу окна Package Manager.
   * Выбрать **Add package from git URL**.
-  * Ввести ссылку на репозиторий плагина: `https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity.git?path=src/FutuRIFT%20Plugin/Assets/Plugins/FutuRIFT`
+  * Ввести ссылку на репозиторий плагина: `https://github.com/RTU-TVP/FutuRIFT-Plugin-Unity.git?path=src/FutuRIFT-Plugin/Assets/Plugins/FutuRIFT`
 
 * Скачать исходный код:
   * Склонировать репозиторий плагина.
