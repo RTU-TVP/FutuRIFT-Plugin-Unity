@@ -25,10 +25,10 @@
 
 ## Использование плагина
 
-Базовый элемент управления креслом - класс **FutuRIFTController**
+Базовый элемент управления креслом - класс **FutuRIFTController**.
 
 ```cs
-// Класс <c>FutuRIFTController</c> предназначен для управления устройством FutuRIFT через отправку UDP-сообщений.
+// Класс <c>FutuRIFTController</c> предназначен для управления устройством FutuRIFT путем отправки данных.
 class FutuRIFTController
 {
     // Свойство для чтения и записи значения угла тангажа.
@@ -42,9 +42,8 @@ class FutuRIFTController
     float Roll { get; set; }
 
     // Конструктор класса <c>FutuRIFTController</c>.
-    // "ip">IP-адрес по которому будет отправляться UDP-сообщение.
-    // "port">Порт по которому будет отправляться UDP-сообщение.
-    public FutuRIFTController(string ip = "127.0.0.1", int port = 6065)
+    // "sender" - Объект, реализующий интерфейс ISender, для отправки данных.
+    public FutuRIFTController(ISender sender)
 
     // Метод для запуска отправки UDP-сообщений.
     void Start();
@@ -66,7 +65,8 @@ private FutuRIFTController controller;
 
 void OnEnable()
 {
-    controller = new FutuRIFTController("127.0.0.1", 6065);
+    var sender = new UdpSender("127.0.0.1", 6065);
+    controller = new FutuRIFTController(sender);
     controller.Start();
 }
 // ...

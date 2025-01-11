@@ -14,9 +14,7 @@ namespace FutuRIFT
 
         private readonly byte[] _buffer = new byte[33];
         private readonly Timer _timer = new(100);
-
-        private readonly UdpClient _udpClient;
-        private readonly IPEndPoint _endPoint;
+        private readonly ISender _sender;
 
         private float _pitch;
         private float _roll;
@@ -48,10 +46,9 @@ namespace FutuRIFT
         /// </summary>
         /// <param name="ip">IP-адрес по которому будет отправляться UDP-сообщение.</param>
         /// <param name="port">Порт по которому будет отправляться UDP-сообщение.</param>
-        public FutuRIFTController(string ip = "127.0.0.1", int port = 6065)
+        public FutuRIFTController(ISender sender)
         {
-            _udpClient = new UdpClient();
-            _endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            _sender = sender;
 
             _buffer[0] = byte.MaxValue;
             _buffer[1] = 33;
@@ -93,7 +90,7 @@ namespace FutuRIFT
 
             _buffer[index++] = 254;
 
-            _udpClient.Send(_buffer, _buffer.Length, _endPoint);
+            _sender.Send(_buffer);
         }
 
         private void Fill(ref byte index, float value)
@@ -154,8 +151,75 @@ namespace FutuRIFT
         }
     }
 
+    /// <summary>
+    /// Интерфейс для отправки данных.
+    /// </summary>
+    public interface ISender
+    {
+        /// <summary>
+        /// Свойство для чтения состояния подключения.
+        /// </summary>
+        bool IsConnected { get; }
+
+        /// <summary>
+        /// Метод для подключения к устройству.
+        /// </summary>
+        void Connect();
+
+        /// <summary>
+        /// Метод для отключения от устройства.
+        /// </summary>
+        void Disconnect();
+
+        /// <summary>
+        /// Метод для отправки данных.
+        /// </summary>
+        /// <param name="data">Данные для отправки.</param>
+        void Send(byte[] data);
+    }
+
+    /// <summary>
+    /// Класс для отправки данных по протоколу UDP.
+    /// </summary>
+    public class UdpSender : ISender
+    {
+        private readonly UdpClient _udpClient;
+        private readonly IPEndPoint _endPoint;
+
+        public bool IsConnected { get; private set; }
+
+        public UdpSender(string ip, int port)
+        {
+            _udpClient = new UdpClient();
+            _endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+        }
+
+        public void Connect()
+        {
+            IsConnected = true;
+        }
+
+        public void Disconnect()
+        {
+            IsConnected = false;
+        }
+
+        public void Send(byte[] data)
+        {
+            _udpClient.Send(data, data.Length, _endPoint);
+        }
+    }
+
     internal static class ComparableExtensions
     {
+        /// <summary>
+        /// Ограничивает значение в диапазоне от <paramref name="min"/> до <paramref name="max"/>.
+        /// </summary>
+        /// <param name="val">Значение для ограничения.</param>
+        /// <param name="min">Минимальное значение.</param>
+        /// <param name="max">Максимальное значение.</param>
+        /// <typeparam name="T">Тип значения.</typeparam>
+        /// <returns>Значение в диапазоне от <paramref name="min"/> до <paramref name="max"/>.</returns>
         public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
         {
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
